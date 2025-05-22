@@ -3,12 +3,18 @@ from typing import Any, Dict
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
-from fastmcp import FastMCP
+try:
+    # Prefer the real fastmcp package if available
+    from fastmcp import FastMCP  # type: ignore
+except Exception:  # pragma: no cover - fallback to stub
+    from fastmcp_stub import FastMCP
 
 app = FastAPI()
 
-API_BASE_URL = "https://api.instantly.ai/api/v2"
-API_KEY = "YOUR_API_KEY"  # Replace with your Instantly API key
+import os
+
+API_BASE_URL = os.getenv("INSTANTLY_API_BASE", "https://api.instantly.ai/api/v2")
+API_KEY = os.getenv("INSTANTLY_API_KEY", "YOUR_API_KEY")
 
 # Initialize FastMCP client (v2)
 client = FastMCP(api_key=API_KEY, base_url=API_BASE_URL)
@@ -37,4 +43,5 @@ def read_root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("INSTANTLY_PORT", "8000"))
+    uvicorn.run(app, host="0.0.0.0", port=port)
