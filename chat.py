@@ -62,5 +62,6 @@ def run_chat(api_base: str) -> None:
 
 
 if __name__ == "__main__":
-    API_BASE = "http://localhost:8000"
+    import os
+    API_BASE = os.getenv("INSTANTLY_CHAT_BASE", "http://localhost:8000")
     run_chat(API_BASE)
