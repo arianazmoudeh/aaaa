@@ -28,3 +28,18 @@ This code serves as a starting point and may need adjustments based on the speci
 ## FastMCP Integration
 
 The server now uses the `FastMCP` client (v2) to communicate with the Instantly API. If you have the real library installed, it will be used automatically. Otherwise the local `fastmcp.py` stub provides compatible functionality for basic requests.
+
+## Chat Client
+
+A simple CLI client `chat.py` is provided to interact with the MCP server. Start the server first, then run:
+
+```bash
+python3 chat.py
+```
+
+Available commands inside the chat:
+
+- `status` – check if the server is running
+- `list campaigns` – list campaigns from Instantly
+- `create campaign {json}` – create a campaign with the provided JSON payload
+- `exit` – quit the chat
