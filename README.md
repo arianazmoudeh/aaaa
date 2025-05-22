@@ -6,9 +6,9 @@ This repo contains a simple FastAPI-based server that proxies requests to the [I
 
 1. Install dependencies (if not already installed):
    ```bash
-   pip install fastapi uvicorn
+   pip install fastapi uvicorn fastmcp==2.*
    ```
-   The server uses only built-in modules for HTTP requests, so no external HTTP client is required.
+   The included `fastmcp.py` module provides a minimal stub of the library if the real package is unavailable.
 
 2. Edit `instantly_server.py` and replace `YOUR_API_KEY` with your Instantly API key.
 
@@ -24,3 +24,7 @@ This repo contains a simple FastAPI-based server that proxies requests to the [I
    - `POST /campaigns` – create a campaign (pass JSON body)
 
 This code serves as a starting point and may need adjustments based on the specific Instantly API endpoints you wish to access.
+
+## FastMCP Integration
+
+The server now uses the `FastMCP` client (v2) to communicate with the Instantly API. If you have the real library installed, it will be used automatically. Otherwise the local `fastmcp.py` stub provides compatible functionality for basic requests.

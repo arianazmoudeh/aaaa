@@ -2,35 +2,21 @@ import json
 from typing import Any, Dict
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-import urllib.request
-import urllib.error
+
+from fastmcp import FastMCP
 
 app = FastAPI()
 
 API_BASE_URL = "https://api.instantly.ai/api/v2"
 API_KEY = "YOUR_API_KEY"  # Replace with your Instantly API key
 
+# Initialize FastMCP client (v2)
+client = FastMCP(api_key=API_KEY, base_url=API_BASE_URL)
+
 
 def call_instantly(endpoint: str, method: str = "GET", data: Dict[str, Any] | None = None) -> Dict[str, Any]:
-    url = f"{API_BASE_URL}{endpoint}"
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-    }
-    req_data = None
-    if data is not None:
-        req_data = json.dumps(data).encode("utf-8")
-    req = urllib.request.Request(url, data=req_data, headers=headers, method=method)
-    try:
-        with urllib.request.urlopen(req) as resp:
-            resp_data = resp.read().decode("utf-8")
-            return json.loads(resp_data)
-    except urllib.error.HTTPError as e:
-        error_msg = e.read().decode("utf-8")
-        return {"error": e.code, "message": error_msg}
-    except urllib.error.URLError as e:
-        return {"error": "network", "message": str(e.reason)}
+    """Wrapper around the FastMCP client."""
+    return client.call(endpoint, method=method, data=data)
 
 
 @app.get("/campaigns")
